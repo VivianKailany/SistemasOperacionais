@@ -1,1 +1,23 @@
-https://replit.com/@VivianKailany/Shell
+all: main
+
+# Compilador
+CC = clang
+override CFLAGS += -g -Wno-everything -pthread -lm
+
+# Encontrar arquivos fonte
+SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
+
+# Encontrar arquivos de cabeçalho
+HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+
+# Alvo para construir o executável principal
+main: $(SRCS) $(HEADERS)
+	$(CC) $(CFLAGS) $(SRCS) -o "$@"
+
+# Alvo para construir o executável principal com símbolos de depuração
+main-debug: $(SRCS) $(HEADERS)
+	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+
+# Limpar arquivos gerados
+clean:
+	rm -f main main-debug
